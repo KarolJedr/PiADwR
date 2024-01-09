@@ -1,4 +1,5 @@
 #setwd("C:/Studia/magisterka/3_semestr/PiADwR/Projekt")
+#hejka
 
 #s
 #t
