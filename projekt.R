@@ -1,17 +1,3 @@
-#setwd("C:/Studia/magisterka/3_semestr/PiADwR/Projekt")
-#hejka
-#no to co teraz
-
-#s
-#t
-#a
-#n
-#i
-#a
-#k
-#:)
-#no to zobaczymy co teraz się stanie
-
 data <- read.csv("Mens-Volleyball-PlusLiga-2008-2023.csv")
 
 data2 <- cbind(data.frame(do.call('rbind', strsplit(as.character(data$Date),', ',fixed=TRUE))), data[,-1])
