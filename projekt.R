@@ -1,4 +1,5 @@
 #setwd("C:/Studia/magisterka/3_semestr/PiADwR/Projekt")
+#hejka
 
 data <- read.csv("Mens-Volleyball-PlusLiga-2008-2023.csv")
 
