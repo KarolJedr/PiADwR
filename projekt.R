@@ -10,6 +10,7 @@
 #a
 #k
 #:)
+#no to zobaczymy co teraz się stanie
 
 data <- read.csv("Mens-Volleyball-PlusLiga-2008-2023.csv")
 
