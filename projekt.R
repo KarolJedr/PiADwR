@@ -44,7 +44,7 @@ seasons <- list(season08_09, season09_10, season10_11, season11_12,
 teams <- unique(data2$Team_1)
 
 #Wybierzmy drużynę i
-i <- 16
+i <- 15
 
 team_matches_home <- list()
 team_matches_away <- list()
@@ -67,11 +67,20 @@ for (j in 1:14){
   wins_away[j] <- nrow(team_matches_away[[j]]) - loses_away[j]
 }
 
-x<-c()
-y <-c()
+wins_away_percentage <- c()
+loses_away_percentage <-c()
+wins_home_percentage <- c()
+loses_home_percentage <-c()
 for (j in 1:14){
-  x <- c(x,(loses_away[j]/(0.0000001+nrow(team_matches_away[[j]]))))
-  y <- c(y,(wins_away[j]/(0.0000001+nrow(team_matches_away[[j]]))))
+  wins_away_percentage <- c(wins_away_percentage,
+                            (loses_away[j]/(0.0000001+nrow(team_matches_away[[j]]))))
+  loses_away_percentage <- c(loses_away_percentage,
+                             (wins_away[j]/(0.0000001+nrow(team_matches_away[[j]]))))
+  wins_home_percentage <- c(wins_home_percentage,
+                            (loses_home[j]/(0.0000001+nrow(team_matches_home[[j]]))))
+  loses_home_percentage <- c(loses_home_percentage,
+                             (wins_home[j]/(0.0000001+nrow(team_matches_home[[j]]))))
 }
-plot(x, type='l', ylim=c(0,1), col='red')
-lines(y, col='green')
+plot(wins_away_percentage, type='l', ylim=c(0,1), col='red')
+lines(wins_home_percentage, col='green')
+
