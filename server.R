@@ -51,4 +51,44 @@ server = function(input, output) {
     stats_plot = plot(stat_away_mean, type='l', col='red')
     lines(stat_home_mean, col='green')
   })
+  output[["rec_error_plot"]] = renderPlot({
+    team_matches <- list()
+    for (j in 1:14){
+      team_matches[[j]] <- seasons[[j]][seasons[[j]]$Team_1 == input[["team_2"]],]
+    }
+
+    loses <- sapply(team_matches, function(x) sum(x$Winner==0))
+    if (input[["error"]] == "Suma błędów"){
+      sum_error <- sapply(team_matches, function(x) sum(as.numeric(gsub(",", ".", x$T1_Srv_Err))+as.numeric(gsub(",", ".", x$T1_Rec_Err))+as.numeric(gsub(",", ".", x$T1_Att_Err))))
+      rec_error_percentage <- mapply(function(x,y) x/(0.0000001+nrow(y)), sum_error/80, team_matches)
+    } else{
+      rec_error <- sapply(team_matches, function(x) sum(as.numeric(gsub(",", ".", x$T1_Srv_Err))))
+      rec_error_percentage <- mapply(function(x,y) x/(0.0000001+nrow(y)), rec_error/17, team_matches)
+    }
+    
+    loses_percentage <- mapply(function(x,y) x/(0.0000001+nrow(y)), loses, team_matches)
+    
+    rec_error_plot = plot(rec_error_percentage, type='l', ylim=c(0,1), col='purple', lwd = 2)
+    lines(loses_percentage, col='pink', lwd = 2)
+  })
+  output[["points_plot"]] = renderPlot({
+    team_matches <- list()
+    for (j in 1:14){
+      team_matches[[j]] <- seasons[[j]][seasons[[j]]$Team_1 == input[["team_3"]],]
+    }
+    
+    wins <- sapply(team_matches, function(x) sum(x$Winner==1))
+    if (input[["point"]] == "Asy serwisowe"){
+      sum_aces <- sapply(team_matches, function(x) sum(x$T1_Srv_Ace))
+      points_percentage <- mapply(function(x,y) x/(0.0000001+nrow(y)), sum_aces/80, team_matches)
+    }
+    
+    wins_percentage <- mapply(function(x,y) x/(0.0000001+nrow(y)), wins, team_matches)
+    
+    points_plot = plot(points_percentage, type='l', ylim=c(0,1), col='purple', lwd = 2)
+    lines(wins_percentage, col='pink', lwd = 2)
+  })
+  output[["final_table"]] = renderDT({
+    data.table( ID = c("b","b","b","a","a","c"),  a = 1:6,  b = 7:12,  c = 13:18)
+  })
 }

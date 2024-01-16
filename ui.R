@@ -1,12 +1,33 @@
 ui = fluidPage(
   tabsetPanel(
-      tabPanel("Wygrane",
+      tabPanel("Statystyki",
                selectInput("team",
                            label = "Wybierz drużynę",
                            choices = teams),
                selectInput("statistic",
                            label = "Wybierz statystykę",
                            choices = stats),
-               plotOutput("stats_plot"))
-    )
+               plotOutput("stats_plot")),
+      tabPanel("Rec error",
+               selectInput("team_2",
+                           label = "Wybierz drużynę",
+                           choices = teams),
+               selectInput("error",
+                           label = "Wybierz wykres",
+                           choices = errors),
+               plotOutput("rec_error_plot")),
+      tabPanel("Wygrane zależności",
+               selectInput("team_3",
+                           label = "Wybierz drużynę",
+                           choices = teams),
+               selectInput("point",
+                           label = "Wybierz wykres",
+                           choices = points),
+               plotOutput("points_plot")),
+      tabPanel("Tabela końcowa",
+               selectInput("season",
+                           label = "Wybierz sezon",
+                           choices = sezon),
+               DTOutput("final_table")))
+      
 )

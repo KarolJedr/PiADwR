@@ -1,5 +1,6 @@
 library(shiny)
-
+library(DT)
+library(data.table)
 
 data <- read.csv("Mens-Volleyball-PlusLiga-2008-2023.csv")
 
@@ -45,3 +46,7 @@ teams <- unique(data2$Team_1)
 stats <- c("Wygrane sety", "Zdobyte punkty", "Błędy serwisowe", "Asy serwisowe",
            "Punkty stracone", "Efektywność zagrywek", "Błędy w ataku", "Punkty z ataku",
            "Efektywność ataków", "Punkty z bloku", "Wygrane", "Porażki")
+errors <- c("Suma błędów", "Błędy w przyjęciu")
+points <- c("Asy serwisowe")
+sezon <- c("2008/9", "2009/10", "2010/11", "2011/12", "2012/13", "2013/14", "2014/15",
+           "2015/16", "2016/17", "2017/18", "2018/19", "2020/21", "2021/22", "2022/23")
