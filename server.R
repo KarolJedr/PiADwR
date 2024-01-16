@@ -72,6 +72,8 @@ server = function(input, output) {
     
     rec_error_plot = plot(rec_error_percentage, type='l', ylim=c(0,1), col='purple', lwd = 3,  xlab = "Numer sezonu", ylab = ylb)
     lines(loses_percentage, col='pink', lwd = 3)
+    legend("topleft", legend=c("Średnia liczba błędów", "Średnia liczba przegranych"),
+           col=c("purple", "pink"), lwd = 4, cex=0.8)                           
   })
   output[["points_plot"]] = renderPlot({
     team_matches <- list()
