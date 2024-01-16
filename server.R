@@ -60,16 +60,18 @@ server = function(input, output) {
     loses <- sapply(team_matches, function(x) sum(x$Winner==0))
     if (input[["error"]] == "Suma błędów"){
       sum_error <- sapply(team_matches, function(x) sum(as.numeric(gsub(",", ".", x$T1_Srv_Err))+as.numeric(gsub(",", ".", x$T1_Rec_Err))+as.numeric(gsub(",", ".", x$T1_Att_Err))))
-      rec_error_percentage <- mapply(function(x,y) x/(0.0000001+nrow(y)), sum_error/80, team_matches)
+      rec_error_percentage <- mapply(function(x,y) x/(0.0000001+nrow(y)), sum_error/200, team_matches)
+      ylb = "Średnia liczba błędów popełnionych na mecz"                                                            
     } else{
       rec_error <- sapply(team_matches, function(x) sum(as.numeric(gsub(",", ".", x$T1_Srv_Err))))
       rec_error_percentage <- mapply(function(x,y) x/(0.0000001+nrow(y)), rec_error/17, team_matches)
+      ylb = "Średnia liczba błędów w przyjęciu popełnionych na mecz"                               
     }
     
     loses_percentage <- mapply(function(x,y) x/(0.0000001+nrow(y)), loses, team_matches)
     
-    rec_error_plot = plot(rec_error_percentage, type='l', ylim=c(0,1), col='purple', lwd = 2)
-    lines(loses_percentage, col='pink', lwd = 2)
+    rec_error_plot = plot(rec_error_percentage, type='l', ylim=c(0,1), col='purple', lwd = 3,  xlab = "Numer sezonu", ylab = ylb)
+    lines(loses_percentage, col='pink', lwd = 3)
   })
   output[["points_plot"]] = renderPlot({
     team_matches <- list()
