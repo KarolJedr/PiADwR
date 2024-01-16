@@ -4,6 +4,9 @@ ui = fluidPage(
                selectInput("team",
                            label = "Wybierz drużynę",
                            choices = teams),
-               plotOutput("wins_plot"))
+               selectInput("statistic",
+                           label = "Wybierz statystykę",
+                           choices = stats),
+               plotOutput("stats_plot"))
     )
 )

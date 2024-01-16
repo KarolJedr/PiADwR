@@ -42,3 +42,6 @@ seasons <- list(season08_09, season09_10, season10_11, season11_12,
 
 teams <- unique(data2$Team_1)
 
+stats <- c("Wygrane sety", "Zdobyte punkty", "Błędy serwisowe", "Asy serwisowe",
+           "Punkty stracone", "Efektywność zagrywek", "Błędy w ataku", "Punkty z ataku",
+           "Efektywność ataków", "Punkty z bloku", "Wygrane", "Porażki")
