@@ -14,57 +14,57 @@ season21_22 <- data2[data2$Date < "2022-08-01" & data2$Date > "2021-08-01",]
 
 season20_21 <- data2[data2$Date < "2021-08-01" & data2$Date > "2020-08-01",]
 
-season18_19 <- data2[data2$Date < "2019-08-01" & data2$Date > "2018-08-01",]
+seasons_to_2019 <- data2[data2$Date < "2020-08-01",]
+colnames(seasons_to_2019) <- c("Date", "Hour", "Team_1", "Team_2",
+                               "T1_Score", "T2_Score", "T1_Sum",
+                               "T1_Srv_Sum", "T1_Srv_Ace", "T1_Srv_Err",
+                               "T1_Srv_Ace_per_set", "T1_Rec_Sum",
+                               "T1_Rec_Err", "T1_Rec_Neg", "T1_Rec_Po",
+                               "T1_Rec_Pos", "T1_Rec_Pe", "T1_Rec_Perf",
+                               "T1_Att_Sum", "T1_Att_Err", "T1_Att_Blk",
+                               "T1_Att_Kill", "T1_Att_Kill_Perc",
+                               "T1_Blk_Sum", "T1_Blk_Sum_per_set", "T2_Sum",
+                               "T2_Srv_Sum", "T2_Srv_Ace", "T2_Srv_Err",
+                               "T2_Srv_Ace_per_set", "T2_Rec_Sum",
+                               "T2_Rec_Err", "T2_Rec_Neg", "T2_Rec_Po",
+                               "T2_Rec_Pos", "T2_Rec_Pe", "T2_Rec_Perf",
+                               "T2_Att_Sum", "T2_Att_Err", "T2_Att_Blk",
+                               "T2_Att_Kill", "T2_Att_Kill_Perc",
+                               "T2_Blk_Sum", "T2_Blk_Sum_per_set", "Winner")
 
-season17_18 <- data2[data2$Date < "2018-08-01" & data2$Date > "2017-08-01",]
+season18_19 <- seasons_to_2019[seasons_to_2019$Date < "2019-08-01" & seasons_to_2019$Date > "2018-08-01",]
 
-season16_17 <- data2[data2$Date < "2017-08-01" & data2$Date > "2016-08-01",]
+season17_18 <- seasons_to_2019[seasons_to_2019$Date < "2018-08-01" & seasons_to_2019$Date > "2017-08-01",]
 
-season15_16 <- data2[data2$Date < "2016-08-01" & data2$Date > "2015-08-01",]
+season16_17 <- seasons_to_2019[seasons_to_2019$Date < "2017-08-01" & seasons_to_2019$Date > "2016-08-01",]
 
-season14_15 <- data2[data2$Date < "2015-08-01" & data2$Date > "2014-08-01",]
+season15_16 <- seasons_to_2019[seasons_to_2019$Date < "2016-08-01" & seasons_to_2019$Date > "2015-08-01",]
 
-season13_14 <- data2[data2$Date < "2014-08-01" & data2$Date > "2013-08-01",]
+season14_15 <- seasons_to_2019[seasons_to_2019$Date < "2015-08-01" & seasons_to_2019$Date > "2014-08-01",]
 
-season12_13 <- data2[data2$Date < "2013-08-01" & data2$Date > "2012-08-01",]
+season13_14 <- seasons_to_2019[seasons_to_2019$Date < "2014-08-01" & seasons_to_2019$Date > "2013-08-01",]
 
-season11_12 <- data2[data2$Date < "2012-08-01" & data2$Date > "2011-08-01",]
+season12_13 <- seasons_to_2019[seasons_to_2019$Date < "2013-08-01" & seasons_to_2019$Date > "2012-08-01",]
 
-season10_11 <- data2[data2$Date < "2011-08-01" & data2$Date > "2010-08-01",]
+season11_12 <- seasons_to_2019[seasons_to_2019$Date < "2012-08-01" & seasons_to_2019$Date > "2011-08-01",]
 
-season09_10 <- data2[data2$Date < "2010-08-01" & data2$Date > "2009-08-01",]
+season10_11 <- seasons_to_2019[seasons_to_2019$Date < "2011-08-01" & seasons_to_2019$Date > "2010-08-01",]
 
-season08_09 <- data2[data2$Date < "2009-08-01" & data2$Date > "2008-08-01",]
+season09_10 <- seasons_to_2019[seasons_to_2019$Date < "2010-08-01" & seasons_to_2019$Date > "2009-08-01",]
+
+season08_09 <- seasons_to_2019[seasons_to_2019$Date < "2009-08-01" & seasons_to_2019$Date > "2008-08-01",]
 
 seasons <- list(season08_09, season09_10, season10_11, season11_12,
                 season12_13, season13_14, season14_15, season15_16,
                 season16_17, season17_18, season18_19)
-for (j in 1:11){
-  colnames(seasons[[j]]) <- c("Date", "Hour", "Team_1", "Team_2",
-                              "T1_Score", "T2_Score", "T1_Sum",
-                              "T1_Srv_Sum", "T1_Srv_Ace", "T1_Srv_Err",
-                              "T1_Srv_Ace_per_set", "T1_Rec_Sum",
-                              "T1_Rec_Err", "T1_Rec_Neg", "T1_Rec_Po",
-                              "T1_Rec_Pos", "T1_Rec_Pe", "T1_Rec_Perf",
-                              "T1_Att_Sum", "T1_Att_Err", "T1_Att_Blk",
-                              "T1_Att_Kill", "T1_Att_Kill_Perc",
-                              "T1_Blk_Sum", "T1_Blk_Sum_per_set", "T2_Sum",
-                              "T2_Srv_Sum", "T2_Srv_Ace", "T2_Srv_Err",
-                              "T2_Srv_Ace_per_set", "T2_Rec_Sum",
-                              "T2_Rec_Err", "T2_Rec_Neg", "T2_Rec_Po",
-                              "T2_Rec_Pos", "T2_Rec_Pe", "T2_Rec_Perf",
-                              "T2_Att_Sum", "T2_Att_Err", "T2_Att_Blk",
-                              "T2_Att_Kill", "T2_Att_Kill_Perc",
-                              "T2_Blk_Sum", "T2_Blk_Sum_per_set", "Winner")
-}
 
 seasons <- append(seasons, list(season20_21, season21_22, season22_23))
-View(seasons[[1]])
+
 teams <- unique(data2$Team_1)
 
 stats <- c("Wygrane sety", "Zdobyte punkty", "Błędy serwisowe", "Asy serwisowe",
-           "Punkty stracone", "Efektywność zagrywek", "Błędy w ataku", "Punkty z ataku",
-           "Efektywność ataków", "Punkty z bloku", "Wygrane", "Porażki")
+           "Punkty stracone", "Błędy w ataku", "Punkty z ataku",
+           "Skuteczność ataków", "Punkty z bloku", "Wygrane", "Porażki")
 errors <- c("Suma błędów", "Błędy w przyjęciu")
 points <- c("Asy serwisowe")
 sezon <- c("2008/9", "2009/10", "2010/11", "2011/12", "2012/13", "2013/14", "2014/15",

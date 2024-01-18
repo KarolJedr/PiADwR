@@ -22,18 +22,15 @@ server = function(input, output) {
     } else if (input[["statistic"]] == "Punkty stracone"){
       stat_home <- sapply(team_matches_home, function(x) sum(x$T2_Srv_Sum))
       stat_away <- sapply(team_matches_away, function(x) sum(x$T1_Srv_Sum))
-    } else if (input[["statistic"]] == "Efektywność zagrywek"){
-      stat_home <- sapply(team_matches_home, function(x) sum(x$T1_Srv_Eff))
-      stat_away <- sapply(team_matches_away, function(x) sum(x$T2_Srv_Eff))
+    } else if (input[["statistic"]] == "Skuteczność ataków"){
+      stat_home <- sapply(team_matches_home, function(y) sum(as.integer(gsub(pattern="%",x=y$T1_Att_Kill_Perc,replacement="")))/100)
+      stat_away <- sapply(team_matches_away, function(y) sum(as.integer(gsub(pattern="%",x=y$T2_Att_Kill_Perc,replacement="")))/100)
     } else if (input[["statistic"]] == "Błędy w ataku"){
       stat_home <- sapply(team_matches_home, function(x) sum(x$T1_Att_Err))
       stat_away <- sapply(team_matches_away, function(x) sum(x$T2_Att_Err))
     } else if (input[["statistic"]] == "Punkty z ataku"){
       stat_home <- sapply(team_matches_home, function(x) sum(x$T1_Att_Kill))
       stat_away <- sapply(team_matches_away, function(x) sum(x$T2_Att_Kill))
-    } else if (input[["statistic"]] == "Efektywność ataków"){
-      stat_home <- sapply(team_matches_home, function(x) sum(x$T1_Att_Eff))
-      stat_away <- sapply(team_matches_away, function(x) sum(x$T2_Att_Eff))
     } else if (input[["statistic"]] == "Punkty z bloku"){
       stat_home <- sapply(team_matches_home, function(x) sum(x$T1_Blk_Sum))
       stat_away <- sapply(team_matches_away, function(x) sum(x$T2_Blk_Sum))
