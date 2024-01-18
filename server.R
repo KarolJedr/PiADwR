@@ -11,8 +11,8 @@ server = function(input, output) {
       stat_home <- sapply(team_matches_home, function(x) sum(x$T1_Score))
       stat_away <- sapply(team_matches_away, function(x) sum(x$T2_Score))
     } else if (input[["statistic"]] == "Zdobyte punkty"){
-      stat_home <- sapply(team_matches_home, function(x) sum(x$T1_Sum))
-      stat_away <- sapply(team_matches_away, function(x) sum(x$T2_Sum))
+      stat_home <- sapply(team_matches_home, function(x) sum(x$T1_Srv_Sum))
+      stat_away <- sapply(team_matches_away, function(x) sum(x$T2_Srv_Sum))
     } else if (input[["statistic"]] == "Błędy serwisowe"){
       stat_home <- sapply(team_matches_home, function(x) sum(x$T1_Srv_Err))
       stat_away <- sapply(team_matches_away, function(x) sum(x$T2_Srv_Err))
@@ -20,8 +20,8 @@ server = function(input, output) {
       stat_home <- sapply(team_matches_home, function(x) sum(x$T1_Srv_Ace))
       stat_away <- sapply(team_matches_away, function(x) sum(x$T2_Srv_Ace))
     } else if (input[["statistic"]] == "Punkty stracone"){
-      stat_home <- sapply(team_matches_home, function(x) sum(x$T1_Sum - x$T1_Ratio))
-      stat_away <- sapply(team_matches_away, function(x) sum(x$T2_Sum - x$T2_Ratio))
+      stat_home <- sapply(team_matches_home, function(x) sum(x$T2_Srv_Sum))
+      stat_away <- sapply(team_matches_away, function(x) sum(x$T1_Srv_Sum))
     } else if (input[["statistic"]] == "Efektywność zagrywek"){
       stat_home <- sapply(team_matches_home, function(x) sum(x$T1_Srv_Eff))
       stat_away <- sapply(team_matches_away, function(x) sum(x$T2_Srv_Eff))

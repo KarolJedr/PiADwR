@@ -38,9 +38,28 @@ season08_09 <- data2[data2$Date < "2009-08-01" & data2$Date > "2008-08-01",]
 
 seasons <- list(season08_09, season09_10, season10_11, season11_12,
                 season12_13, season13_14, season14_15, season15_16,
-                season16_17, season17_18, season18_19,
-                season20_21, season21_22, season22_23)
+                season16_17, season17_18, season18_19)
+for (j in 1:11){
+  colnames(seasons[[j]]) <- c("Date", "Hour", "Team_1", "Team_2",
+                              "T1_Score", "T2_Score", "T1_Sum",
+                              "T1_Srv_Sum", "T1_Srv_Ace", "T1_Srv_Err",
+                              "T1_Srv_Ace_per_set", "T1_Rec_Sum",
+                              "T1_Rec_Err", "T1_Rec_Neg", "T1_Rec_Po",
+                              "T1_Rec_Pos", "T1_Rec_Pe", "T1_Rec_Perf",
+                              "T1_Att_Sum", "T1_Att_Err", "T1_Att_Blk",
+                              "T1_Att_Kill", "T1_Att_Kill_Perc",
+                              "T1_Blk_Sum", "T1_Blk_Sum_per_set", "T2_Sum",
+                              "T2_Srv_Sum", "T2_Srv_Ace", "T2_Srv_Err",
+                              "T2_Srv_Ace_per_set", "T2_Rec_Sum",
+                              "T2_Rec_Err", "T2_Rec_Neg", "T2_Rec_Po",
+                              "T2_Rec_Pos", "T2_Rec_Pe", "T2_Rec_Perf",
+                              "T2_Att_Sum", "T2_Att_Err", "T2_Att_Blk",
+                              "T2_Att_Kill", "T2_Att_Kill_Perc",
+                              "T2_Blk_Sum", "T2_Blk_Sum_per_set", "Winner")
+}
 
+seasons <- append(seasons, list(season20_21, season21_22, season22_23))
+View(seasons[[1]])
 teams <- unique(data2$Team_1)
 
 stats <- c("Wygrane sety", "Zdobyte punkty", "Błędy serwisowe", "Asy serwisowe",
