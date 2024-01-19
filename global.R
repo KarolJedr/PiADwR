@@ -65,6 +65,8 @@ teams <- unique(data2$Team_1)
 stats <- c("Wygrane sety", "Zdobyte punkty", "Błędy serwisowe", "Asy serwisowe",
            "Punkty stracone", "Błędy w ataku", "Punkty z ataku",
            "Skuteczność ataków", "Punkty z bloku", "Wygrane", "Porażki")
+stats_2 <- c("Wygrane sety", "Zdobyte punkty", "Asy serwisowe",
+           "Punkty stracone", "Skuteczność ataków", "Punkty z bloku", "Wygrane")
 errors <- c("Suma błędów", "Błędy w przyjęciu")
 points <- c("Asy serwisowe")
 sezon <- c("2008/9", "2009/10", "2010/11", "2011/12", "2012/13", "2013/14", "2014/15",

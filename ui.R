@@ -37,10 +37,13 @@ border-color: transparent;
                            label = "Wybierz wykres",
                            choices = points),
                plotOutput("points_plot")),
-      tabPanel("Tabela końcowa",
-               selectInput("season",
+      tabPanel("Tabela wyników",
+               selectInput("season_2",
                            label = "Wybierz sezon",
                            choices = sezon),
-               DTOutput("final_table")))
+               selectInput("statistic_2",
+                           label = "Wybierz statystykę",
+                           choices = stats_2),
+               DTOutput("score_table")))
       
 )

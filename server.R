@@ -56,8 +56,10 @@ server = function(input, output) {
     stat_away_mean <- mapply(function(x,y) x/(0.0000001+nrow(y)), stat_away, team_matches_away)
     stat_home_mean <- mapply(function(x,y) x/(0.0000001+nrow(y)), stat_home, team_matches_home)
     
-    stats_plot = plot(stat_away_mean, type='l', col='red', ylim=y_lim)
-    lines(stat_home_mean, col='green')
+    stats_plot = plot(stat_away_mean, type='l', col='red', ylim=y_lim, lwd = 3,  xlab = "Numer sezonu", ylab = input[["statistic"]])
+    lines(stat_home_mean, col='green', lwd = 3)
+    legend("topleft", legend=c("Mecze u siebie", "Mecze na wyjeździe"),
+           col=c("green", "red"), lwd = 4, cex=0.8)
   })
   output[["rec_error_plot"]] = renderPlot({
     team_matches_home <- list()
@@ -83,8 +85,9 @@ server = function(input, output) {
     rec_error_plot = plot(rec_error_percentage, type='l', ylim=c(0,1), col='purple', lwd = 3,  xlab = "Numer sezonu", ylab = ylb)
     lines(loses_percentage, col='pink', lwd = 3)
     legend("topleft", legend=c("Średnia liczba błędów", "Średnia liczba przegranych"),
-           col=c("purple", "pink"), lwd = 4, cex=0.8)                           
+           col=c("purple", "pink"), lwd = 4, cex=0.8)
   })
+  
   output[["points_plot"]] = renderPlot({
     team_matches_home <- list()
     team_matches_away <- list()
@@ -101,10 +104,60 @@ server = function(input, output) {
     
     wins_percentage <- mapply(function(x,y,z) x/(0.0000001+nrow(y)+nrow(z)), wins, team_matches_home, team_matches_away)
     
-    points_plot = plot(points_percentage, type='l', ylim=c(0,1), col='purple', lwd = 2)
-    lines(wins_percentage, col='pink', lwd = 2)
+    points_plot = plot(points_percentage, type='l', ylim=c(0,1), col='purple', lwd = 3)
+    lines(wins_percentage, col='pink', lwd = 3)
+    legend("topleft", legend=c("Średnia liczba asów serwisowych", "Średnia liczba wygranych"),
+           col=c("purple", "pink"), lwd = 4, cex=0.8)
   })
-  output[["final_table"]] = renderDT({
-    data.table( ID = c("b","b","b","a","a","c"),  a = 1:6,  b = 7:12,  c = 13:18)
+  
+  output[["score_table"]] = renderDT({
+    season_index <- which(sezon == input[["season_2"]])
+
+    stat_sums <- c()
+    if (input[["statistic_2"]] == "Skuteczność ataków"){
+      for (tm in teams){
+        stat_sum <- sum(as.integer(gsub(pattern="%",x=seasons[[season_index]][seasons[[season_index]]$Team_1 == tm,]$T1_Att_Kill_Perc,replacement="")))/100
+        stat_sum <- stat_sum + sum(as.integer(gsub(pattern="%",x=seasons[[season_index]][seasons[[season_index]]$Team_2 == tm,]$T2_Att_Kill_Perc,replacement="")))/100
+        stat_sums <- c(stat_sums, stat_sum/(nrow(seasons[[season_index]][seasons[[season_index]]$Team_1 == tm,])+nrow(seasons[[season_index]][seasons[[season_index]]$Team_2 == tm,])))
+      }
+    } else if (input[["statistic_2"]] == "Wygrane sety"){
+      for (tm in teams){
+        stat_sum <- sum(as.integer(seasons[[season_index]][seasons[[season_index]]$Team_1 == tm,]$T1_Score))
+        stat_sum <- stat_sum + sum(as.integer(seasons[[season_index]][seasons[[season_index]]$Team_2 == tm,]$T2_Score))
+        stat_sums <- c(stat_sums, stat_sum/(nrow(seasons[[season_index]][seasons[[season_index]]$Team_1 == tm,])+nrow(seasons[[season_index]][seasons[[season_index]]$Team_2 == tm,])))
+      }
+    } else if (input[["statistic_2"]] == "Zdobyte punkty"){
+      for (tm in teams){
+        stat_sum <- sum(as.integer(seasons[[season_index]][seasons[[season_index]]$Team_1 == tm,]$T1_Srv_Sum))
+        stat_sum <- stat_sum + sum(as.integer(seasons[[season_index]][seasons[[season_index]]$Team_2 == tm,]$T2_Srv_Sum))
+        stat_sums <- c(stat_sums, stat_sum/(nrow(seasons[[season_index]][seasons[[season_index]]$Team_1 == tm,])+nrow(seasons[[season_index]][seasons[[season_index]]$Team_2 == tm,])))
+      }
+    } else if (input[["statistic_2"]] == "Asy serwisowe"){
+      for (tm in teams){
+        stat_sum <- sum(as.integer(seasons[[season_index]][seasons[[season_index]]$Team_1 == tm,]$T1_Srv_Ace))
+        stat_sum <- stat_sum + sum(as.integer(seasons[[season_index]][seasons[[season_index]]$Team_2 == tm,]$T2_Srv_Ace))
+        stat_sums <- c(stat_sums, stat_sum/(nrow(seasons[[season_index]][seasons[[season_index]]$Team_1 == tm,])+nrow(seasons[[season_index]][seasons[[season_index]]$Team_2 == tm,])))
+      }
+    } else if (input[["statistic_2"]] == "Punkty z bloku"){
+      for (tm in teams){
+        stat_sum <- sum(as.integer(seasons[[season_index]][seasons[[season_index]]$Team_1 == tm,]$T1_Blk_Sum))
+        stat_sum <- stat_sum + sum(as.integer(seasons[[season_index]][seasons[[season_index]]$Team_2 == tm,]$T2_Blk_Sum))
+        stat_sums <- c(stat_sums, stat_sum/(nrow(seasons[[season_index]][seasons[[season_index]]$Team_1 == tm,])+nrow(seasons[[season_index]][seasons[[season_index]]$Team_2 == tm,])))
+      }
+    } else if (input[["statistic_2"]] == "Wygrane"){
+      for (tm in teams){
+        stat_sum <- sum(as.integer(seasons[[season_index]][seasons[[season_index]]$Team_1 == tm,]$Winner))
+        stat_sum <- stat_sum - sum(as.integer(seasons[[season_index]][seasons[[season_index]]$Team_2 == tm,]$Winner)) + nrow(seasons[[season_index]][seasons[[season_index]]$Team_2 == tm,])
+        stat_sums <- c(stat_sums, stat_sum/(nrow(seasons[[season_index]][seasons[[season_index]]$Team_1 == tm,])+nrow(seasons[[season_index]][seasons[[season_index]]$Team_2 == tm,])))
+      }
+    } else if (input[["statistic_2"]] == "Punkty stracone"){
+      for (tm in teams){
+        stat_sum <- sum(as.integer(seasons[[season_index]][seasons[[season_index]]$Team_1 == tm,]$T2_Srv_Sum))
+        stat_sum <- stat_sum + sum(as.integer(seasons[[season_index]][seasons[[season_index]]$Team_2 == tm,]$T1_Srv_Sum))
+        stat_sums <- c(stat_sums, stat_sum/(nrow(seasons[[season_index]][seasons[[season_index]]$Team_1 == tm,])+nrow(seasons[[season_index]][seasons[[season_index]]$Team_2 == tm,])))
+      }
+    }
+    score_table <- data.table(Drużyna = teams, Średnia = stat_sums)
+    setorder(score_table[!is.na(score_table$Średnia)], cols = - "Średnia")
   })
 }
