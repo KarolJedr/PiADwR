@@ -1,4 +1,8 @@
-server = function(input, output) {
+server = function(input, output, session){
+  observeEvent(input$zaleznosc,
+               {
+                 updateRadioButtons(session, input = "error", choices = cho[[as.integer(input$zaleznosc)]])
+               })
   output[["stats_plot"]] = renderPlot({
     team_matches_home <- list()
     team_matches_away <- list()
@@ -68,45 +72,32 @@ server = function(input, output) {
       team_matches_home[[j]] <- seasons[[j]][seasons[[j]]$Team_1 == input[["team_2"]],]
       team_matches_away[[j]] <- seasons[[j]][seasons[[j]]$Team_2 == input[["team_2"]],]
     }
-
-    loses <- sapply(team_matches_home, function(x) sum(x$Winner==0)) + sapply(team_matches_away, function(x) sum(x$Winner==1))
-    if (input[["error"]] == "Suma błędów"){
-      sum_error <- sapply(team_matches_home, function(x) sum(as.numeric(gsub(",", ".", x$T1_Srv_Err))+as.numeric(gsub(",", ".", x$T1_Rec_Err))+as.numeric(gsub(",", ".", x$T1_Att_Err))))+sapply(team_matches_away, function(x) sum(as.numeric(gsub(",", ".", x$T2_Srv_Err))+as.numeric(gsub(",", ".", x$T2_Rec_Err))+as.numeric(gsub(",", ".", x$T2_Att_Err))))
-      rec_error_percentage <- mapply(function(x,y,z) x/(0.0000001+nrow(y)+nrow(z)), sum_error/100, team_matches_home, team_matches_away)
-      ylb = "Średnia liczba błędów popełnionych na mecz (1:100)"                                                            
-    } else{
-      rec_error <- sapply(team_matches_home, function(x) sum(as.numeric(gsub(",", ".", x$T1_Srv_Err)))) + sapply(team_matches_away, function(x) sum(as.numeric(gsub(",", ".", x$T2_Srv_Err))))
-      rec_error_percentage <- mapply(function(x,y,z) x/(0.0000001+nrow(y)+nrow(z)), rec_error/20, team_matches_home, team_matches_away)
-      ylb = "Średnia liczba błędów w przyjęciu popełnionych na mecz (1:20)"                               
-    }
     
-    loses_percentage <- mapply(function(x,y,z) x/(0.0000001+nrow(y)+nrow(z)), loses, team_matches_home, team_matches_away)
-    
-    rec_error_plot = plot(rec_error_percentage, type='l', ylim=c(0,1), col='purple', lwd = 3,  xlab = "Numer sezonu", ylab = ylb)
-    lines(loses_percentage, col='pink', lwd = 3)
-    legend("topleft", legend=c("Średnia liczba błędów", "Średnia liczba przegranych"),
-           col=c("purple", "pink"), lwd = 4, cex=0.8)
-  })
-  
-  output[["points_plot"]] = renderPlot({
-    team_matches_home <- list()
-    team_matches_away <- list()
-    for (j in 1:14){
-      team_matches_home[[j]] <- seasons[[j]][seasons[[j]]$Team_1 == input[["team_3"]],]
-      team_matches_away[[j]] <- seasons[[j]][seasons[[j]]$Team_2 == input[["team_3"]],]
-    }
-    
-    wins <- sapply(team_matches_home, function(x) sum(x$Winner==1)) + sapply(team_matches_away, function(x) sum(x$Winner==0))
-    if (input[["point"]] == "Asy serwisowe"){
+    if (input[["zaleznosc"]] == 1){
+      wins <- sapply(team_matches_home, function(x) sum(x$Winner==1)) + sapply(team_matches_away, function(x) sum(x$Winner==0))
       sum_aces <- sapply(team_matches_home, function(x) sum(x$T1_Srv_Ace)) + sapply(team_matches_away, function(x) sum(x$T2_Srv_Ace))
-      points_percentage <- mapply(function(x,y,z) x/(0.0000001+nrow(y)+nrow(z)), sum_aces/20, team_matches_home, team_matches_away)
+      stat_percentage <- mapply(function(x,y,z) x/(0.0000001+nrow(y)+nrow(z)), sum_aces/20, team_matches_home, team_matches_away)
+      score_percentage <- mapply(function(x,y,z) x/(0.0000001+nrow(y)+nrow(z)), wins, team_matches_home, team_matches_away)
+      leg <- c("Średnia liczba asów serwisowych", "Średnia liczba wygranych")
+      ylb = "Średnia liczba asów serwisowych na mecz (1:20)"
+    } else{
+      loses <- sapply(team_matches_home, function(x) sum(x$Winner==0)) + sapply(team_matches_away, function(x) sum(x$Winner==1))
+      if (input[["error"]] == "Suma błędów"){
+        sum_error <- sapply(team_matches_home, function(x) sum(as.numeric(gsub(",", ".", x$T1_Srv_Err))+as.numeric(gsub(",", ".", x$T1_Rec_Err))+as.numeric(gsub(",", ".", x$T1_Att_Err))))+sapply(team_matches_away, function(x) sum(as.numeric(gsub(",", ".", x$T2_Srv_Err))+as.numeric(gsub(",", ".", x$T2_Rec_Err))+as.numeric(gsub(",", ".", x$T2_Att_Err))))
+        stat_percentage <- mapply(function(x,y,z) x/(0.0000001+nrow(y)+nrow(z)), sum_error/40, team_matches_home, team_matches_away)
+        ylb = "Średnia liczba błędów popełnionych na mecz (1:40)"                                                            
+      } else{
+        rec_error <- sapply(team_matches_home, function(x) sum(as.numeric(gsub(",", ".", x$T1_Srv_Err)))) + sapply(team_matches_away, function(x) sum(as.numeric(gsub(",", ".", x$T2_Srv_Err))))
+        stat_percentage <- mapply(function(x,y,z) x/(0.0000001+nrow(y)+nrow(z)), rec_error/40, team_matches_home, team_matches_away)
+        ylb = "Średnia liczba błędów w przyjęciu popełnionych na mecz (1:40)"                               
+      }
+      score_percentage <- mapply(function(x,y,z) x/(0.0000001+nrow(y)+nrow(z)), loses, team_matches_home, team_matches_away)
+      leg <- c("Średnia liczba błędów", "Średnia liczba przegranych")
     }
     
-    wins_percentage <- mapply(function(x,y,z) x/(0.0000001+nrow(y)+nrow(z)), wins, team_matches_home, team_matches_away)
-    
-    points_plot = plot(points_percentage, type='l', ylim=c(0,1), col='purple', lwd = 3)
-    lines(wins_percentage, col='pink', lwd = 3)
-    legend("topleft", legend=c("Średnia liczba asów serwisowych", "Średnia liczba wygranych"),
+    rec_error_plot = plot(stat_percentage, type='l', ylim=c(0,1), col='purple', lwd = 3,  xlab = "Numer sezonu", ylab = ylb)
+    lines(score_percentage, col='pink', lwd = 3)
+    legend("topleft", legend=leg,
            col=c("purple", "pink"), lwd = 4, cex=0.8)
   })
   
@@ -157,7 +148,21 @@ server = function(input, output) {
         stat_sums <- c(stat_sums, stat_sum/(nrow(seasons[[season_index]][seasons[[season_index]]$Team_1 == tm,])+nrow(seasons[[season_index]][seasons[[season_index]]$Team_2 == tm,])))
       }
     }
-    score_table <- data.table(Drużyna = teams, Średnia = stat_sums)
+    score_table <- data.table(Drużyna = teams, Średnia = round(stat_sums, 2))
     setorder(score_table[!is.na(score_table$Średnia)], cols = - "Średnia")
+  })
+  
+  output[["matches"]] = renderDT({
+    selected_seasons <- c(input[["seasons_checkbox_1"]], input[["seasons_checkbox_2"]])
+    all_matches <- data.table(rbindlist(seasons[as.integer(selected_seasons)]))
+    selected_matches <- rbind(all_matches[all_matches$Team_1 == input[["first_team"]] & all_matches$Team_2 == input[["second_team"]],],
+                             all_matches[all_matches$Team_2 == input[["first_team"]] & all_matches$Team_1 == input[["second_team"]],])
+    if (nrow(selected_matches) > 0){
+      matches <- selected_matches[, c("Date", "Hour", "Team_1", "Team_2", "T1_Score", "T2_Score")]
+    } else{
+      matches <- data.table()
+    }
+    
+    
   })
 }

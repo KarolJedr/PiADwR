@@ -3,6 +3,8 @@ library(DT)
 library(data.table)
 
 data <- read.csv("Mens-Volleyball-PlusLiga-2008-2023.csv")
+data$Winner[data$Winner==0] <- 2
+data$Winner<- data$Winner - 1
 
 data2 <- cbind(data.frame(do.call('rbind', strsplit(as.character(data$Date),', ',fixed=TRUE))), data[,-1])
 colnames(data2) <- c("Date", "Hour", colnames(data2)[3:length(colnames(data2))])
@@ -67,7 +69,6 @@ stats <- c("Wygrane sety", "Zdobyte punkty", "Błędy serwisowe", "Asy serwisowe
            "Skuteczność ataków", "Punkty z bloku", "Wygrane", "Porażki")
 stats_2 <- c("Wygrane sety", "Zdobyte punkty", "Asy serwisowe",
            "Punkty stracone", "Skuteczność ataków", "Punkty z bloku", "Wygrane")
-errors <- c("Suma błędów", "Błędy w przyjęciu")
-points <- c("Asy serwisowe")
 sezon <- c("2008/9", "2009/10", "2010/11", "2011/12", "2012/13", "2013/14", "2014/15",
            "2015/16", "2016/17", "2017/18", "2018/19", "2020/21", "2021/22", "2022/23")
+cho <- list(c("Asy serwisowe"), c("Suma błędów", "Błędy w przyjęciu"))
