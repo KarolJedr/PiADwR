@@ -71,4 +71,4 @@ stats_2 <- c("Wygrane sety", "Zdobyte punkty", "Asy serwisowe",
            "Punkty stracone", "Skuteczność ataków", "Punkty z bloku", "Wygrane")
 sezon <- c("2008/9", "2009/10", "2010/11", "2011/12", "2012/13", "2013/14", "2014/15",
            "2015/16", "2016/17", "2017/18", "2018/19", "2020/21", "2021/22", "2022/23")
-cho <- list(c("Asy serwisowe"), c("Suma błędów", "Błędy w przyjęciu"))
+cho <- list(c("Asy serwisowe", "Punkty z bloku"), c("Suma błędów", "Błędy w przyjęciu"))

@@ -75,11 +75,18 @@ server = function(input, output, session){
     
     if (input[["zaleznosc"]] == 1){
       wins <- sapply(team_matches_home, function(x) sum(x$Winner==1)) + sapply(team_matches_away, function(x) sum(x$Winner==0))
-      sum_aces <- sapply(team_matches_home, function(x) sum(x$T1_Srv_Ace)) + sapply(team_matches_away, function(x) sum(x$T2_Srv_Ace))
-      stat_percentage <- mapply(function(x,y,z) x/(0.0000001+nrow(y)+nrow(z)), sum_aces/20, team_matches_home, team_matches_away)
+      if (input[["error"]] == "Asy serwisowe"){
+        sum_aces <- sapply(team_matches_home, function(x) sum(x$T1_Srv_Ace)) + sapply(team_matches_away, function(x) sum(x$T2_Srv_Ace))
+        stat_percentage <- mapply(function(x,y,z) x/(0.0000001+nrow(y)+nrow(z)), sum_aces/10, team_matches_home, team_matches_away)
+        leg <- c("Średnia liczba asów serwisowych", "Średnia liczba wygranych")
+        ylb = "Średnia liczba asów serwisowych na mecz (1:10)"
+      } else{
+        sum_blk <- sapply(team_matches_home, function(x) sum(x$T1_Blk_Sum)) + sapply(team_matches_away, function(x) sum(x$T2_Blk_Sum))
+        stat_percentage <- mapply(function(x,y,z) x/(0.0000001+nrow(y)+nrow(z)), sum_blk/20, team_matches_home, team_matches_away)
+        leg <- c("Średnia liczba punktów z bloku", "Średnia liczba wygranych")
+        ylb = "Średnia liczba punktów z bloku na mecz (1:20)"
+      }
       score_percentage <- mapply(function(x,y,z) x/(0.0000001+nrow(y)+nrow(z)), wins, team_matches_home, team_matches_away)
-      leg <- c("Średnia liczba asów serwisowych", "Średnia liczba wygranych")
-      ylb = "Średnia liczba asów serwisowych na mecz (1:20)"
     } else{
       loses <- sapply(team_matches_home, function(x) sum(x$Winner==0)) + sapply(team_matches_away, function(x) sum(x$Winner==1))
       if (input[["error"]] == "Suma błędów"){
@@ -162,7 +169,5 @@ server = function(input, output, session){
     } else{
       matches <- data.table()
     }
-    
-    
   })
 }
